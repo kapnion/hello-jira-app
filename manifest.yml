@@ -1,0 +1,21 @@
+modules:
+  jira:issueActivity:
+    - key: hello-jira-hello-world-issue-activity
+      resource: main
+      resolver:
+        function: resolver
+      render: native
+      title: hello-jira
+  function:
+    - key: resolver
+      handler: index.handler
+resources:
+  - key: main
+    path: src/frontend/index.jsx
+app:
+  runtime:
+    name: nodejs20.x
+  id: ari:cloud:ecosystem::app/612a4ad1-e2fa-459c-a98b-8d88ecddf83f
+permissions:
+  scopes:
+    - storage:app
