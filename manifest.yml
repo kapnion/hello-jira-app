@@ -18,4 +18,5 @@ app:
   id: ari:cloud:ecosystem::app/612a4ad1-e2fa-459c-a98b-8d88ecddf83f
 permissions:
   scopes:
+    - read:jira-user
     - storage:app

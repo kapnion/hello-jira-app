@@ -9,14 +9,15 @@ const App = () => {
   const [isRunning, setIsRunning] = useState(false);
   const [points, setPoints] = useState(0);
   const [motivatingText, setMotivatingText] = useState('');
+  const [userName, setUserName] = useState('');
   const context = useProductContext();
 
   const motivatingMessages = [
-    'Keep going! 😊',
-    'You are doing great! 👍',
-    'Awesome job! 🌟',
-    'Keep up the good work! 💪',
-    'Fantastic effort! 🎉'
+    'Keep going, {name}! 😊',
+    'You are doing great, {name}! 👍',
+    'Awesome job, {name}! 🌟',
+    'Keep up the good work, {name}! 💪',
+    'Fantastic effort, {name}! 🎉'
   ];
 
   useEffect(() => {
@@ -26,6 +27,7 @@ const App = () => {
       .catch((error) => console.error('Error invoking getText:', error));
     loadElapsedTime();
     loadPoints();
+    loadUserName();
   }, []);
 
   useEffect(() => {
@@ -39,7 +41,7 @@ const App = () => {
 
       messageInterval = setInterval(() => {
         const randomMessage = motivatingMessages[Math.floor(Math.random() * motivatingMessages.length)];
-        setMotivatingText(randomMessage);
+        setMotivatingText(randomMessage.replace('{name}', userName));
       }, 10000); // Change message every 10 seconds
     } else if (!isRunning && startTime !== null) {
       clearInterval(timer);
@@ -49,7 +51,7 @@ const App = () => {
       clearInterval(timer);
       clearInterval(messageInterval);
     };
-  }, [isRunning]);
+  }, [isRunning, userName]);
 
   const handleStartPause = () => {
     console.log('handleStartPause clicked');
@@ -118,6 +120,21 @@ const App = () => {
         setPoints(storedPoints);
       } catch (error) {
         console.error('Error invoking loadPoints:', error);
+      }
+    }
+  };
+
+  const loadUserName = async () => {
+    const userId = context?.accountId;
+    log("userId: " + userId);
+    if (userId) {
+      try {
+        console.log('Loading user name');
+        const userName = await invoke('getUserName', { userId });
+        console.log('Loaded user name:', userName);
+        setUserName(userName);
+      } catch (error) {
+        console.error('Error invoking getUserName:', error);
       }
     }
   };
