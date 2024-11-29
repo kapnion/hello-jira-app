@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import ForgeReconciler, { Text, Button, useProductContext } from '@forge/react';
+import ForgeReconciler, { Text, Button, ProgressBar, useProductContext } from '@forge/react';
 import { invoke } from '@forge/bridge';
 
 const App = () => {
@@ -86,6 +86,7 @@ const App = () => {
     <>
       <Text>{data ? data : 'Loading...'}</Text>
       <Text>Elapsed Time: {formatTime(elapsedTime)}</Text>
+      <ProgressBar value={(elapsedTime % 60000) / 60000} /> {/* Progress bar for each minute */}
       <Button onClick={handleStartPause}>
         {isRunning ? 'Pause' : 'Start'}
       </Button>
